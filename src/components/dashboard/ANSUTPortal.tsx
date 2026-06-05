@@ -153,9 +153,6 @@ export default function ANSUTPortal() {
                   Portail central des applications de la DTDI
                 </p>
               </div>
-              <span className="sm:hidden text-sm font-bold gradient-text truncate">
-                ANSUT
-              </span>
             </div>
 
             {/* Search */}
