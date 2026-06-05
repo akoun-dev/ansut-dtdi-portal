@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="ansutGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f18120"/>
+      <stop offset="100%" style="stop-color:#205eb3"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1628"/>
+      <stop offset="100%" style="stop-color:#121f3a"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="96" fill="url(#bgGrad)" stroke="url(#ansutGrad)" stroke-width="3"/>
+  <!-- Shield shape -->
+  <path d="M100 30 L155 55 L155 105 Q155 145 100 175 Q45 145 45 105 L45 55 Z" fill="none" stroke="url(#ansutGrad)" stroke-width="4" stroke-linejoin="round"/>
+  <!-- Network nodes -->
+  <circle cx="100" cy="70" r="12" fill="url(#ansutGrad)" opacity="0.9"/>
+  <circle cx="75" cy="110" r="8" fill="#f18120" opacity="0.8"/>
+  <circle cx="125" cy="110" r="8" fill="#205eb3" opacity="0.8"/>
+  <circle cx="100" cy="140" r="10" fill="url(#ansutGrad)" opacity="0.7"/>
+  <!-- Network connections -->
+  <line x1="100" y1="82" x2="75" y2="102" stroke="url(#ansutGrad)" stroke-width="2" opacity="0.6"/>
+  <line x1="100" y1="82" x2="125" y2="102" stroke="url(#ansutGrad)" stroke-width="2" opacity="0.6"/>
+  <line x1="75" y1="118" x2="100" y2="130" stroke="url(#ansutGrad)" stroke-width="2" opacity="0.6"/>
+  <line x1="125" y1="118" x2="100" y2="130" stroke="url(#ansutGrad)" stroke-width="2" opacity="0.6"/>
+  <!-- ANSUT Text -->
+  <text x="100" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="8" fill="url(#ansutGrad)" letter-spacing="3">ANSUT</text>
+</svg>
