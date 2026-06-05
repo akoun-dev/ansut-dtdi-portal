@@ -18,14 +18,11 @@ import {
   Tag,
   StickyNote,
   Building2,
-  Landmark,
-  CreditCard,
   Search,
   ExternalLink,
   Grid3X3,
   List,
   Monitor,
-  Zap,
   Clock,
   ArrowUpRight,
   RefreshCw,
@@ -62,13 +59,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Tag,
   StickyNote,
   Building2,
-  Landmark,
-  CreditCard,
   Radar: Monitor,
 };
 
 export default function ANSUTPortal() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [serviceStatuses, setServiceStatuses] = useState<Record<string, "up" | "down" | "unknown">>({});
@@ -128,11 +123,6 @@ export default function ANSUTPortal() {
     return SERVICES;
   }, [searchQuery]);
 
-  const stats = useMemo(() => {
-    const up = Object.values(serviceStatuses).filter((s) => s === "up").length;
-    const total = Object.keys(serviceStatuses).length;
-    return { up, total, services: SERVICES.length };
-  }, [serviceStatuses]);
 
   const toggleTheme = () => {
     if (!resolvedTheme) return;
@@ -268,28 +258,6 @@ export default function ANSUTPortal() {
 
       {/* ── Main Content ── */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
-        {/* Stats Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-          <StatCard
-            icon={<Zap className="w-4 h-4" />}
-            label="Services total"
-            value={stats.services}
-            color="#f18120"
-          />
-          <StatCard
-            icon={<Activity className="w-4 h-4" />}
-            label="En ligne"
-            value={stats.up}
-            color="#22c55e"
-          />
-          <StatCard
-            icon={<Monitor className="w-4 h-4" />}
-            label="Vérifiés"
-            value={stats.total}
-            color="#1c55a3"
-          />
-        </div>
-
         {/* Services Grid/List */}
         <AnimatePresence mode="wait">
           {filteredServices.length === 0 ? (
@@ -375,38 +343,6 @@ export default function ANSUTPortal() {
         </div>
       </footer>
     </div>
-  );
-}
-
-/* ── Stat Card ── */
-function StatCard({
-  icon,
-  label,
-  value,
-  color,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-  color: string;
-}) {
-  return (
-    <Card className="bg-card/60 border-border/50 backdrop-blur-sm overflow-hidden">
-      <CardContent className="p-4">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center"
-            style={{ backgroundColor: `${color}15`, color }}
-          >
-            {icon}
-          </div>
-          <div>
-            <p className="text-2xl font-bold">{value}</p>
-            <p className="text-xs text-muted-foreground">{label}</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
   );
 }
 
