@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 import {
   Brain,
   Map,
@@ -22,13 +24,13 @@ import {
   ExternalLink,
   Grid3X3,
   List,
-  ChevronDown,
   Monitor,
   Zap,
-  Shield,
   Clock,
   ArrowUpRight,
   RefreshCw,
+  Sun,
+  Moon,
   LucideIcon,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -43,10 +45,7 @@ import {
   SERVICES,
   CATEGORIES,
   searchServices,
-  getServicesByCategory,
   type Service,
-  type ServiceCategory,
-  type ServiceCategoryInfo,
 } from "@/lib/services";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -68,24 +67,17 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Radar: Monitor,
 };
 
-const categoryOrder: ServiceCategory[] = [
-  "systems",
-  "cartography",
-  "api",
-  "monitoring",
-  "mobile",
-  "internal-tools",
-  "external",
-];
-
 export default function ANSUTPortal() {
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | "all">("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [serviceStatuses, setServiceStatuses] = useState<Record<string, "up" | "down" | "unknown">>({});
   const [isCheckingStatus, setIsCheckingStatus] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
   const [lastChecked, setLastChecked] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     const now = new Date();
@@ -117,7 +109,7 @@ export default function ANSUTPortal() {
         setLastChecked(new Date().toLocaleTimeString("fr-FR"));
       }
     } catch {
-      // Status check failed silently
+      // silent
     } finally {
       setIsCheckingStatus(false);
     }
@@ -131,17 +123,10 @@ export default function ANSUTPortal() {
 
   const filteredServices = useMemo(() => {
     if (searchQuery.trim()) {
-      const searched = searchServices(searchQuery);
-      if (selectedCategory !== "all") {
-        return searched.filter((s) => s.category === selectedCategory);
-      }
-      return searched;
-    }
-    if (selectedCategory !== "all") {
-      return getServicesByCategory(selectedCategory);
+      return searchServices(searchQuery);
     }
     return SERVICES;
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery]);
 
   const stats = useMemo(() => {
     const up = Object.values(serviceStatuses).filter((s) => s === "up").length;
@@ -149,17 +134,27 @@ export default function ANSUTPortal() {
     return { up, total, services: SERVICES.length };
   }, [serviceStatuses]);
 
+  const toggleTheme = () => {
+    if (!resolvedTheme) return;
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
+
   return (
     <div className="min-h-screen flex flex-col mesh-gradient">
-      {/* Header */}
+      {/* ── Header ── */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/80 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo and Title */}
+            {/* Logo + Title */}
             <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-[#f18120] to-[#205eb3] flex items-center justify-center shadow-lg shadow-[#f18120]/20">
-                <Shield className="w-5 h-5 text-white" />
-              </div>
+              <Image
+                src="/ansut-logo.png"
+                alt="ANSUT"
+                width={40}
+                height={40}
+                className="rounded-lg object-contain"
+                priority
+              />
               <div className="hidden sm:block">
                 <h1 className="text-lg font-bold tracking-tight">
                   <span className="gradient-text">ANSUT</span>
@@ -183,8 +178,9 @@ export default function ANSUTPortal() {
               </div>
             </div>
 
-            {/* Right side actions */}
-            <div className="flex items-center gap-2">
+            {/* Actions */}
+            <div className="flex items-center gap-1.5">
+              {/* Theme toggle */}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -192,7 +188,37 @@ export default function ANSUTPortal() {
                       variant="ghost"
                       size="icon"
                       className="h-9 w-9"
-                      onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
+                      onClick={toggleTheme}
+                      disabled={!mounted}
+                    >
+                      {mounted && resolvedTheme === "dark" ? (
+                        <Sun className="w-4 h-4" />
+                      ) : (
+                        <Moon className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      {mounted && resolvedTheme === "dark"
+                        ? "Mode clair"
+                        : "Mode sombre"}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              {/* View toggle */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9"
+                      onClick={() =>
+                        setViewMode(viewMode === "grid" ? "list" : "grid")
+                      }
                     >
                       {viewMode === "grid" ? (
                         <List className="w-4 h-4" />
@@ -207,6 +233,7 @@ export default function ANSUTPortal() {
                 </Tooltip>
               </TooltipProvider>
 
+              {/* Refresh status */}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -229,7 +256,7 @@ export default function ANSUTPortal() {
               </TooltipProvider>
 
               {lastChecked && (
-                <span className="hidden md:flex items-center gap-1 text-xs text-muted-foreground">
+                <span className="hidden md:flex items-center gap-1 text-xs text-muted-foreground ml-1">
                   <Clock className="w-3 h-3" />
                   {lastChecked}
                 </span>
@@ -239,10 +266,10 @@ export default function ANSUTPortal() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* ── Main Content ── */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
           <StatCard
             icon={<Zap className="w-4 h-4" />}
             label="Services total"
@@ -257,65 +284,10 @@ export default function ANSUTPortal() {
           />
           <StatCard
             icon={<Monitor className="w-4 h-4" />}
-            label="Catégories"
-            value={categoryOrder.length}
-            color="#205eb3"
-          />
-          <StatCard
-            icon={<Shield className="w-4 h-4" />}
-            label="Statut vérifié"
+            label="Vérifiés"
             value={stats.total}
-            color="#a855f7"
+            color="#1c55a3"
           />
-        </div>
-
-        {/* Category Filters */}
-        <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2 custom-scrollbar">
-          <button
-            onClick={() => setSelectedCategory("all")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-              selectedCategory === "all"
-                ? "bg-[#f18120] text-white shadow-lg shadow-[#f18120]/25"
-                : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
-            }`}
-          >
-            <Grid3X3 className="w-3.5 h-3.5" />
-            Tous les services
-          </button>
-
-          {categoryOrder.map((catId) => {
-            const cat = CATEGORIES.find((c) => c.id === catId)!;
-            const count = SERVICES.filter((s) => s.category === catId).length;
-            const isActive = selectedCategory === catId;
-
-            return (
-              <button
-                key={catId}
-                onClick={() =>
-                  setSelectedCategory(isActive ? "all" : catId)
-                }
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                  isActive
-                    ? "text-white shadow-lg"
-                    : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
-                }`}
-                style={
-                  isActive
-                    ? { backgroundColor: cat.color, boxShadow: `0 4px 15px ${cat.color}33` }
-                    : undefined
-                }
-              >
-                {getIcon(cat.icon)}
-                {cat.label}
-                <Badge
-                  variant="secondary"
-                  className="h-5 px-1.5 text-[10px] ml-1"
-                >
-                  {count}
-                </Badge>
-              </button>
-            );
-          })}
         </div>
 
         {/* Services Grid/List */}
@@ -332,7 +304,7 @@ export default function ANSUTPortal() {
               </div>
               <h3 className="text-lg font-semibold mb-2">Aucun service trouvé</h3>
               <p className="text-muted-foreground text-sm">
-                Essayez un autre terme de recherche ou changez de catégorie
+                Essayez un autre terme de recherche
               </p>
             </motion.div>
           ) : viewMode === "grid" ? (
@@ -373,14 +345,18 @@ export default function ANSUTPortal() {
         </AnimatePresence>
       </main>
 
-      {/* Footer */}
+      {/* ── Footer ── */}
       <footer className="mt-auto border-t border-border bg-background/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#f18120] to-[#205eb3] flex items-center justify-center">
-                <Shield className="w-3 h-3 text-white" />
-              </div>
+              <Image
+                src="/ansut-logo.png"
+                alt="ANSUT"
+                width={20}
+                height={20}
+                className="rounded object-contain"
+              />
               <span className="text-sm text-muted-foreground">
                 © {new Date().getFullYear()} ANSUT — Agence Nationale des Services Universels des Télécommunications
               </span>
@@ -402,7 +378,7 @@ export default function ANSUTPortal() {
   );
 }
 
-/* Stat Card Component */
+/* ── Stat Card ── */
 function StatCard({
   icon,
   label,
@@ -415,7 +391,7 @@ function StatCard({
   color: string;
 }) {
   return (
-    <Card className="bg-card/50 border-border/50 backdrop-blur-sm overflow-hidden">
+    <Card className="bg-card/60 border-border/50 backdrop-blur-sm overflow-hidden">
       <CardContent className="p-4">
         <div className="flex items-center gap-3">
           <div
@@ -434,7 +410,7 @@ function StatCard({
   );
 }
 
-/* Service Card Component */
+/* ── Service Card (Grid) ── */
 function ServiceCard({
   service,
   status,
@@ -519,15 +495,12 @@ function ServiceCard({
             </span>
           </div>
         </CardContent>
-
-        {/* Hover gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#f18120]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
       </Card>
     </motion.a>
   );
 }
 
-/* Service List Item Component */
+/* ── Service List Item ── */
 function ServiceListItem({
   service,
   status,
@@ -606,7 +579,7 @@ function ServiceListItem({
   );
 }
 
-/* Status Indicator Component */
+/* ── Status Indicator ── */
 function StatusIndicator({
   status,
 }: {
@@ -614,29 +587,17 @@ function StatusIndicator({
 }) {
   if (!status || status === "unknown") {
     return (
-      <div className="flex items-center gap-1.5">
-        <div className="w-2 h-2 rounded-full bg-muted-foreground/50" />
-      </div>
+      <div className="w-2 h-2 rounded-full bg-muted-foreground/50" />
     );
   }
 
   if (status === "up") {
     return (
-      <div className="flex items-center gap-1.5">
-        <div className="w-2 h-2 rounded-full bg-emerald-500 status-pulse shadow-lg shadow-emerald-500/50" />
-      </div>
+      <div className="w-2 h-2 rounded-full bg-emerald-500 status-pulse shadow-lg shadow-emerald-500/50" />
     );
   }
 
   return (
-    <div className="flex items-center gap-1.5">
-      <div className="w-2 h-2 rounded-full bg-red-500 shadow-lg shadow-red-500/50" />
-    </div>
+    <div className="w-2 h-2 rounded-full bg-red-500 shadow-lg shadow-red-500/50" />
   );
-}
-
-/* Icon Helper */
-function getIcon(iconName: string): React.ReactNode {
-  const Icon = ICON_MAP[iconName] || Globe;
-  return <Icon className="w-3.5 h-3.5" />;
 }
