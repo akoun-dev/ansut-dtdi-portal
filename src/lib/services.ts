@@ -112,8 +112,8 @@ export const SERVICES: Service[] = [
     name: "JULABA",
     description: "JÙLABA : gestion vocale des ventes, stocks et services sociaux pour les commerçants ivoiriens",
     url: "https://julaba.online",
-    category: "monitoring",
-    icon: "Radar",
+    category: "sociale",
+    icon: "Person",
     domain: "julaba.online",
   },
 

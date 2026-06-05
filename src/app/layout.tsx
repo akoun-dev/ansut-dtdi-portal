@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ANSUT - Portail Central des Services",
+  title: "ANSUT - Portail central des applications de la DTDI",
   description:
     "Portail centralisé d'accès aux services numériques ANSUT et partenaires. Dashboard unifié pour la supervision, la gestion et l'administration.",
   keywords: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "ANSUT - Portail Central des Services",
+    title: "ANSUT - Portail central des applications de la DTDI",
     description:
       "Portail centralisé d'accès à tous les services numériques ANSUT",
     type: "website",
