@@ -112,7 +112,7 @@ export default function ANSUTPortal() {
 
   useEffect(() => {
     checkStatuses();
-    const interval = setInterval(checkStatuses, 60000);
+    const interval = setInterval(checkStatuses, 300000); // every 5 min
     return () => clearInterval(interval);
   }, [checkStatuses]);
 
