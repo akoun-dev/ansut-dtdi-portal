@@ -136,13 +136,13 @@ export default function ANSUTPortal() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo + Title */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <Image
                 src="/ansut-logo.png"
                 alt="ANSUT"
-                width={40}
-                height={40}
-                className="rounded-lg object-contain"
+                width={36}
+                height={36}
+                className="rounded-lg object-contain shrink-0 sm:w-10 sm:h-10"
                 priority
               />
               <div className="hidden sm:block">
@@ -153,10 +153,13 @@ export default function ANSUTPortal() {
                   Portail central des applications de la DTDI
                 </p>
               </div>
+              <span className="sm:hidden text-sm font-bold gradient-text truncate">
+                ANSUT
+              </span>
             </div>
 
             {/* Search */}
-            <div className="flex-1 max-w-md mx-4">
+            <div className="flex-1 max-w-md mx-2 sm:mx-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -169,7 +172,7 @@ export default function ANSUTPortal() {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1 sm:gap-1.5">
               {/* Theme toggle */}
               <TooltipProvider>
                 <Tooltip>
