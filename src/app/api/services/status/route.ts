@@ -47,7 +47,6 @@ export async function GET() {
     "memo.ansut.ci",
     "mon-toit.ansut.ci",
     "radar.ansut.ci",
-    "julaba.online",
   ];
 
   const results: StatusResult[] = await Promise.all(

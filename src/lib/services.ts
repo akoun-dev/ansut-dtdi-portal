@@ -4,8 +4,7 @@ export type ServiceCategory =
   | "api"
   | "monitoring"
   | "mobile"
-  | "internal-tools"
-  | "external";
+  | "internal-tools";
 
 export interface Service {
   id: string;
@@ -33,7 +32,6 @@ export const CATEGORIES: ServiceCategoryInfo[] = [
   { id: "monitoring", label: "Monitoring", icon: "Activity", color: "#22c55e" },
   { id: "mobile", label: "Mobile", icon: "Smartphone", color: "#a855f7" },
   { id: "internal-tools", label: "Outils internes", icon: "Wrench", color: "#eab308" },
-  { id: "external", label: "Services externes", icon: "Globe", color: "#ec4899" },
 ];
 
 export const SERVICES: Service[] = [
@@ -109,36 +107,7 @@ export const SERVICES: Service[] = [
     icon: "Radar",
     domain: "radar.ansut.ci",
   },
-  {
-    id: "julaba-online",
-    name: "Julaba.online",
-    description: "Outil externe de gestion et de services",
-    url: "https://julaba.online",
-    category: "external",
-    icon: "Globe",
-    domain: "julaba.online",
-    isExternal: true,
-  },
-  {
-    id: "julaba",
-    name: "Julaba",
-    description: "Solutions financières et de gestion",
-    url: "https://julaba.com",
-    category: "external",
-    icon: "Landmark",
-    domain: "julaba.com",
-    isExternal: true,
-  },
-  {
-    id: "julaya",
-    name: "Julaya",
-    description: "Plateforme de paiement et reporting",
-    url: "https://julaya.co",
-    category: "external",
-    icon: "CreditCard",
-    domain: "julaya.co",
-    isExternal: true,
-  },
+
 ];
 
 export function getServicesByCategory(category: ServiceCategory): Service[] {
