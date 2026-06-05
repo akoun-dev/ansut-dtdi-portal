@@ -5,17 +5,30 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import {
+  Brain,
+  Map,
+  Link,
+  Activity,
+  Smartphone,
+  Wrench,
   Globe,
+  LayoutDashboard,
+  MapPin,
+  Cable,
+  Tag,
+  StickyNote,
+  Building2,
   Search,
   ExternalLink,
   Grid3X3,
   List,
+  Monitor,
   Clock,
   ArrowUpRight,
   RefreshCw,
   Sun,
   Moon,
-  ImageIcon,
+  LucideIcon,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -32,9 +45,22 @@ import {
   type Service,
 } from "@/lib/services";
 
-function getFaviconUrl(domain: string): string {
-  return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-}
+const ICON_MAP: Record<string, LucideIcon> = {
+  Brain,
+  Map,
+  MapPin,
+  Link,
+  Cable,
+  Activity,
+  Smartphone,
+  Wrench,
+  Globe,
+  LayoutDashboard,
+  Tag,
+  StickyNote,
+  Building2,
+  Radar: Monitor,
+};
 
 export default function ANSUTPortal() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -320,45 +346,6 @@ export default function ANSUTPortal() {
   );
 }
 
-/* ── Service Icon (from favicon) ── */
-function ServiceIcon({
-  domain,
-  category,
-  size = "md",
-}: {
-  domain: string;
-  category?: { color: string };
-  size?: "sm" | "md";
-}) {
-  const [error, setError] = useState(false);
-
-  const dim = size === "sm" ? "w-10 h-10" : "w-12 h-12";
-  const iconDim = size === "sm" ? "w-5 h-5" : "w-6 h-6";
-
-  return (
-    <div
-      className={`${dim} rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110`}
-      style={{
-        backgroundColor: error ? `${category?.color || "#f18120"}15` : undefined,
-      }}
-    >
-      <img
-        src={getFaviconUrl(domain)}
-        alt=""
-        className={`${iconDim} object-contain rounded`}
-        onError={() => setError(true)}
-        style={{ display: error ? "none" : undefined }}
-      />
-      {error && (
-        <ImageIcon
-          className={iconDim}
-          style={{ color: category?.color || "#f18120" }}
-        />
-      )}
-    </div>
-  );
-}
-
 /* ── Service Card (Grid) ── */
 function ServiceCard({
   service,
@@ -370,6 +357,7 @@ function ServiceCard({
   index: number;
 }) {
   const category = CATEGORIES.find((c) => c.id === service.category);
+  const Icon = ICON_MAP[service.icon] || Globe;
 
   return (
     <motion.a
@@ -392,7 +380,15 @@ function ServiceCard({
 
         <CardContent className="p-5">
           <div className="flex items-start justify-between mb-4">
-            <ServiceIcon domain={service.domain} category={category} />
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+              style={{
+                backgroundColor: `${category?.color}15`,
+                color: category?.color,
+              }}
+            >
+              <Icon className="w-6 h-6" />
+            </div>
 
             <div className="flex items-center gap-2">
               <StatusIndicator status={status} />
@@ -451,6 +447,7 @@ function ServiceListItem({
   index: number;
 }) {
   const category = CATEGORIES.find((c) => c.id === service.category);
+  const Icon = ICON_MAP[service.icon] || Globe;
 
   return (
     <motion.a
@@ -465,7 +462,15 @@ function ServiceListItem({
       <Card className="service-card-glow bg-card/60 border-border/50 backdrop-blur-sm overflow-hidden">
         <CardContent className="p-4">
           <div className="flex items-center gap-4">
-            <ServiceIcon domain={service.domain} category={category} size="sm" />
+            <div
+              className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+              style={{
+                backgroundColor: `${category?.color}15`,
+                color: category?.color,
+              }}
+            >
+              <Icon className="w-5 h-5" />
+            </div>
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
