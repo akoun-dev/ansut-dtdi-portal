@@ -150,7 +150,7 @@ export default function ANSUTPortal() {
                   <span className="gradient-text">ANSUT</span>
                 </h1>
                 <p className="text-[10px] text-muted-foreground -mt-0.5">
-                  Portail Central des Services
+                  Portail central des applications de la DTDI
                 </p>
               </div>
             </div>

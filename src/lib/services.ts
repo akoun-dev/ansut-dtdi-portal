@@ -37,7 +37,7 @@ export const CATEGORIES: ServiceCategoryInfo[] = [
 export const SERVICES: Service[] = [
   {
     id: "cockpit",
-    name: "Cockpit",
+    name: "COCKPIT",
     description: "Système de supervision et de pilotage centralisé",
     url: "https://cockpit.ansut.ci",
     category: "systems",
@@ -46,7 +46,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "connectmap",
-    name: "ConnectMap",
+    name: "CONNECTMAP",
     description: "Cartographie et visualisation des réseaux",
     url: "https://connectmap.ansut.ci",
     category: "cartography",
@@ -55,7 +55,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "fsuconnect",
-    name: "FSU Connect",
+    name: "FSU CONNECT",
     description: "API et interconnexion des services",
     url: "https://fsuconnect.ansut.ci",
     category: "api",
@@ -64,8 +64,8 @@ export const SERVICES: Service[] = [
   },
   {
     id: "labelisation",
-    name: "Labélisation",
-    description: "Traitement et gestion des données de labellisation",
+    name: "LABÉLISATION",
+    description: "Traitement et gestion des données de labelisation",
     url: "https://labelisation.ansut.ci",
     category: "systems",
     icon: "Tag",
@@ -73,7 +73,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "lafricamobile",
-    name: "L'Afrique Mobile",
+    name: "LAFRICAMOBILE",
     description: "Plateforme mobile et services associés",
     url: "https://lafricamobile.ansut.ci",
     category: "mobile",
@@ -82,7 +82,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "memo",
-    name: "Memo",
+    name: "MEMO",
     description: "Notes internes et documentation partagée",
     url: "https://memo.ansut.ci",
     category: "internal-tools",
@@ -91,7 +91,7 @@ export const SERVICES: Service[] = [
   },
   {
     id: "mon-toit",
-    name: "Mon Toit",
+    name: "MON TOIT",
     description: "Projet immobilier et gestion immobilière",
     url: "https://mon-toit.ansut.ci",
     category: "internal-tools",
@@ -100,12 +100,21 @@ export const SERVICES: Service[] = [
   },
   {
     id: "radar",
-    name: "Radar",
+    name: "RADAR",
     description: "Monitoring et détection en temps réel",
     url: "https://radar.ansut.ci",
     category: "monitoring",
     icon: "Radar",
     domain: "radar.ansut.ci",
+  },
+  {
+    id: "julaba",
+    name: "JULABA",
+    description: "JÙLABA : gestion vocale des ventes, stocks et services sociaux pour les commerçants ivoiriens",
+    url: "https://julaba.online",
+    category: "monitoring",
+    icon: "Radar",
+    domain: "julaba.online",
   },
 
 ];
