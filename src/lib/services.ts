@@ -56,7 +56,7 @@ export const SERVICES: Service[] = [
   {
     id: "fsuconnect",
     name: "FSU CONNECT",
-    description: "API et interconnexion des services",
+    description: "Une plateforme collaborative de co-rédaction en temps réel, conçue pour faciliter la création, l’édition et la validation de documents stratégiques (rapports, contributions, déclarations) entre les acteurs du Fonds du Service Universel (FSU) en Afrique",
     url: "https://fsuconnect.ansut.ci",
     category: "api",
     icon: "Cable",
